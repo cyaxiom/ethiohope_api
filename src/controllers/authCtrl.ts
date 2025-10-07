@@ -1,15 +1,18 @@
-import { Request, Response, NextFunction } from 'express';
-import asyncHandler from 'express-async-handler';
+import { Request, Response} from 'express';
 import * as authService from '../services/authService';
+import asyncHandler from 'express-async-handler';
 
 export const signup = asyncHandler(async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  const user = await authService.signup(email, password);
-  res.status(201).json({ message: 'User created', user });
-});
+  const { email, password, firstName, lastName, username, roles } = req.body;
 
-export const signin = asyncHandler(async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  const data = await authService.signin(email, password);
-  res.status(200).json(data);
+  const user = await authService.signup({
+    email,
+    password,
+    firstName,
+    lastName,
+    username,
+    roleNames: roles,
+  });
+
+  res.status(201).json({ status: 'success', message: 'User created', user });
 });

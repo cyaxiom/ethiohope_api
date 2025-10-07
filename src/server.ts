@@ -1,27 +1,33 @@
 import dotenv from 'dotenv';
 import app from './app';
 import { connectDB } from './config/database';
+import { seedRoles } from './utils/seedRoles';
 
 // Load environment variables based on NODE_ENV
 dotenv.config({
-  path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development'
+  path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development',
 });
 
 const PORT = process.env.PORT || 2707;
 
-// Connect to the database first
-const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/ethiohope';
+// Async IIFE to handle startup
+(async () => {
+  try {
+    const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/ethiohope';
 
-connectDB(mongoUri)
-  .then(() => {
+    // Connect to the database
+    await connectDB(mongoUri);
     console.log('✅ Database connected successfully');
 
-    // Start the server only after DB connection
+    // Seed default roles
+    await seedRoles();
+
+    // Start the server
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
-  })
-  .catch((err) => {
-    console.error('❌ Database connection failed:', err);
-    process.exit(1); // Exit process if DB connection fails
-  });
+  } catch (err) {
+    console.error('❌ Server failed to start:', err);
+    process.exit(1); // Exit process if anything fails
+  }
+})();
