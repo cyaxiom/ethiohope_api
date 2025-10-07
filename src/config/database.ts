@@ -2,9 +2,11 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 // Load environment variables based on NODE_ENV
-dotenv.config({
-  path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development'
-});
+// Load environment variables from .env file
+const envFile = process.env.NODE_ENV === "production"
+    ? ".env.production"
+    : ".env.development";
+dotenv.config({ path: envFile });
 
 export const connectDB = async (uri: string) => {
   try {

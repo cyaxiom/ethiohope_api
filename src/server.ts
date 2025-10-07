@@ -3,10 +3,11 @@ import app from './app';
 import { connectDB } from './config/database';
 import { seedRoles } from './utils/seedRoles';
 
-// Load environment variables based on NODE_ENV
-dotenv.config({
-  path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development',
-});
+// Load environment variables from .env file
+const envFile = process.env.NODE_ENV === "production"
+    ? ".env.production"
+    : ".env.development";
+dotenv.config({ path: envFile  });
 
 const PORT = process.env.PORT || 2707;
 
