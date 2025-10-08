@@ -1,5 +1,5 @@
 import { Request, Response} from 'express';
-import * as authService from '../services/authService';
+import * as authService from '../services/auth.service';
 import asyncHandler from 'express-async-handler';
 
 export const signup = asyncHandler(async (req: Request, res: Response) => {
@@ -14,5 +14,9 @@ export const signup = asyncHandler(async (req: Request, res: Response) => {
     roleNames: roles,
   });
 
-  res.status(201).json({ status: 'success', message: 'User created', user });
+  res.status(201).json({ 
+    status: 'success',
+    message: 'User created',
+    user
+    });
 });

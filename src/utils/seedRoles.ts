@@ -1,4 +1,4 @@
-import Role from '../models/Role';
+import Role from '../models/role.model';
 
 const defaultRoles = ['student', 'teacher', 'admin', 'manager', 'staff'];
 
